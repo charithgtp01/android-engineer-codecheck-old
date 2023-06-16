@@ -1,21 +1,20 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check
+package jp.co.yumemi.android.code_check.ui.views
 
 import android.content.Context
-import android.os.Parcelable
 import androidx.lifecycle.ViewModel
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
+import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.model.GitHubRepo
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import kotlinx.parcelize.Parcelize
 import org.json.JSONObject
 import java.util.*
 
@@ -27,7 +26,7 @@ class OneViewModel(
 ) : ViewModel() {
 
     // 検索結果
-    fun searchResults(inputText: String): List<item> = runBlocking {
+    fun searchResults(inputText: String): List<GitHubRepo> = runBlocking {
         val client = HttpClient(Android)
 
         return@runBlocking GlobalScope.async {
@@ -40,7 +39,7 @@ class OneViewModel(
 
             val jsonItems = jsonBody.optJSONArray("items")!!
 
-            val items = mutableListOf<item>()
+            val items = mutableListOf<GitHubRepo>()
 
             /**
              * アイテムの個数分ループする
@@ -56,7 +55,7 @@ class OneViewModel(
                 val openIssuesCount = jsonItem.optLong("open_issues_count")
 
                 items.add(
-                    item(
+                    GitHubRepo(
                         name = name,
                         ownerIconUrl = ownerIconUrl,
                         language = context.getString(R.string.written_language, language),
@@ -68,20 +67,9 @@ class OneViewModel(
                 )
             }
 
-            lastSearchDate = Date()
+//            lastSearchDate = Date()
 
             return@async items.toList()
         }.await()
     }
 }
-
-@Parcelize
-data class item(
-    val name: String,
-    val ownerIconUrl: String,
-    val language: String,
-    val stargazersCount: Long,
-    val watchersCount: Long,
-    val forksCount: Long,
-    val openIssuesCount: Long,
-) : Parcelable
