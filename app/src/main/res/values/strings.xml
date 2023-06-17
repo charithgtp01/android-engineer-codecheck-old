@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Android Engineer CodeCheck</string>
-    <string name="searchInputText_hint">GitHub のリポジトリを検索できるよー</string>\
+    <string name="searchInputText_hint">GitHub のリポジトリを検索できるよー</string>
+    <string name="wait">Please Wait....</string>\
 </resources>
