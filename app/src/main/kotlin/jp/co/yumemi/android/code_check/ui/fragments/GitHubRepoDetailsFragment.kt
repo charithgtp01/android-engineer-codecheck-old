@@ -56,7 +56,7 @@ class GitHubRepoDetailsFragment : Fragment() {
         viewModel.setGitRepoData(gitHubRepo)
 
         /* Show profile icon using Glide */
-        Glide.with(this).load(gitHubRepo.owner.avatarUrl).into(binding.ownerIconView)
+        Glide.with(this).load(gitHubRepo.owner?.avatarUrl).into(binding.ownerIconView)
     }
 
 
