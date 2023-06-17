@@ -5,6 +5,7 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
     <style name="languageTextViewStyle">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
@@ -14,4 +15,10 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="roundedImageViewRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
 </resources>

@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import jp.co.yumemi.android.code_check.databinding.LayoutGitRepoListBinding
 import jp.co.yumemi.android.code_check.model.GitHubRepo
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class GitRepoListAdapter @Inject constructor(private val itemClickListener: OnItemClickListener
@@ -20,6 +22,8 @@ class GitRepoListAdapter @Inject constructor(private val itemClickListener: OnIt
     override fun onBindViewHolder(holder: GitRepoListViewHolder, position: Int) {
         val gitHubRepo = getItem(position)
         holder.binding.repositoryNameView.text = gitHubRepo.name
+        /* Show profile icon using Glide */
+        Glide.with(holder.itemView.rootView).load(gitHubRepo.owner.avatarUrl).into(holder.binding.ownerIconView)
         holder.itemView.setOnClickListener{
             itemClickListener.itemClick(gitHubRepo)
         }
