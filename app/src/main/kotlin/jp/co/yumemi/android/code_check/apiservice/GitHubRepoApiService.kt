@@ -7,6 +7,11 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface GitHubRepoApiService {
+
+    /**
+     * @param q: String part of the repository name
+     * @see https://api.github.com/ to get Free APIs
+     */
     @GET(REPOSITORIES_ENDPOINT)
     suspend fun getRepositories(@Query("q") q: String): Response<ServerResponse>
 }

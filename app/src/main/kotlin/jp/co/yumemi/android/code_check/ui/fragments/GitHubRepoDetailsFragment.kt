@@ -4,35 +4,60 @@
 package jp.co.yumemi.android.code_check.ui.fragments
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import coil.load
-import jp.co.yumemi.android.code_check.R
+import com.bumptech.glide.Glide
 import jp.co.yumemi.android.code_check.databinding.FragmentGitHubDetailsBinding
+import jp.co.yumemi.android.code_check.model.GitHubRepo
+import jp.co.yumemi.android.code_check.ui.views.GitHubRepoDetailsViewModel
 
-class GitHubRepoDetailsFragment : Fragment(R.layout.fragment_git_hub_details) {
-
+class GitHubRepoDetailsFragment : Fragment() {
     private val args: GitHubRepoDetailsFragmentArgs by navArgs()
+    private lateinit var binding: FragmentGitHubDetailsBinding
+    private lateinit var viewModel: GitHubRepoDetailsViewModel
+    private lateinit var gitHubRepo: GitHubRepo
 
-    private var binding: FragmentGitHubDetailsBinding? = null
-    private val _binding get() = binding!!
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        /* Safe Args */
+        gitHubRepo = args.item
+
+        /*
+         * Initiate Data Binding and View Model
+         * Retrieve the Github Object from GitHubRepoListFragment
+         */
+        binding = FragmentGitHubDetailsBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(requireActivity())[GitHubRepoDetailsViewModel::class.java]
+        binding.vm = viewModel
+        binding.lifecycleOwner = this
+
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        Log.d("検索した日時", lastSearchDate.toString())
-
-        binding = FragmentGitHubDetailsBinding.bind(view)
-
-        var item = args.item
-
-        _binding.ownerIconView.load(item.owner.avatarUrl);
-        _binding.nameView.text = item.name;
-        _binding.languageView.text = item.language;
-        _binding.starsView.text = "${item.stargazersCount} stars";
-        _binding.watchersView.text = "${item.watchersCount} watchers";
-        _binding.forksView.text = "${item.forksCount} forks";
-        _binding.openIssuesView.text = "${item.openIssuesCount} open issues";
+        setData()
     }
+
+    /**
+     * Pass selected Git Repo Object to view model
+     * Set data to view
+     * @see https://bumptech.github.io/glide/
+     */
+    private fun setData() {
+        viewModel.setGitRepoData(gitHubRepo)
+
+        /* Show profile icon using Glide */
+        Glide.with(this).load(gitHubRepo.owner.avatarUrl).into(binding.ownerIconView)
+    }
+
+
 }
