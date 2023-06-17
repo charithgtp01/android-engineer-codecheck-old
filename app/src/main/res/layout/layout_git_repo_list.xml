@@ -16,8 +16,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-            app:strokeColor="@color/purple_700"
-            app:strokeWidth="0.5dp"
+            app:strokeColor="@color/round_icon_stroke_color"
+            app:strokeWidth="@dimen/round_icon_stroke_width"
             android:layout_margin="@dimen/recycle_view_margin"/>
 
         <TextView

@@ -6,15 +6,20 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class GitHubRepo(
-    val name: String,
-    val owner: Owner,
-    val language: String,
+    val name: String?,
+    val owner: Owner?,
+    @SerializedName("language")
+    private val nullableLanguage: String?,
     @SerializedName("stargazers_count")
-    val stargazersCount: Long,
+    val stargazersCount: Long?,
     @SerializedName("watchers_count")
-    val watchersCount: Long,
+    val watchersCount: Long?,
     @SerializedName("forks_count")
-    val forksCount: Long,
+    val forksCount: Long?,
     @SerializedName("open_issues_count")
-    val openIssuesCount: Long,
-) : Parcelable
+    val openIssuesCount: Long?,
+) : Parcelable {
+    //Set Default Value to language variable
+    val language: String
+        get() = nullableLanguage ?: "No Language Data"
+}

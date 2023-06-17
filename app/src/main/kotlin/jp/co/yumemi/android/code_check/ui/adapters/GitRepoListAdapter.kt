@@ -23,7 +23,7 @@ class GitRepoListAdapter @Inject constructor(private val itemClickListener: OnIt
         val gitHubRepo = getItem(position)
         holder.binding.repositoryNameView.text = gitHubRepo.name
         /* Show profile icon using Glide */
-        Glide.with(holder.itemView.rootView).load(gitHubRepo.owner.avatarUrl).into(holder.binding.ownerIconView)
+        Glide.with(holder.itemView.rootView).load(gitHubRepo.owner?.avatarUrl).into(holder.binding.ownerIconView)
         holder.itemView.setOnClickListener{
             itemClickListener.itemClick(gitHubRepo)
         }
