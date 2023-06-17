@@ -27,9 +27,6 @@ class GitRepoListAdapter @Inject constructor(private val itemClickListener: OnIt
         holder.itemView.setOnClickListener{
             itemClickListener.itemClick(gitHubRepo)
         }
-
-        if(position==itemCount)
-            itemClickListener.lastItemInitiated()
     }
 
     /**
@@ -37,7 +34,6 @@ class GitRepoListAdapter @Inject constructor(private val itemClickListener: OnIt
      */
     interface OnItemClickListener{
         fun itemClick(item: GitHubRepo)
-        fun lastItemInitiated()
     }
     inner class GitRepoListViewHolder(val binding: LayoutGitRepoListBinding) :
         RecyclerView.ViewHolder(binding.root) {

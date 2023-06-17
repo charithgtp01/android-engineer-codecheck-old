@@ -1,10 +1,17 @@
 package jp.co.yumemi.android.code_check.repository
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import jp.co.yumemi.android.code_check.apiservice.GitHubRepoApiService
-import jp.co.yumemi.android.code_check.model.ServerResponse
+import jp.co.yumemi.android.code_check.model.Error
+import jp.co.yumemi.android.code_check.model.ErrorResponse
+import jp.co.yumemi.android.code_check.model.Resource
+import jp.co.yumemi.android.code_check.model.Resource.Success
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import javax.inject.Inject
+
 
 class GitHubRepository @Inject constructor(
     private val gitHubRepoApiService: GitHubRepoApiService
@@ -15,7 +22,7 @@ class GitHubRepository @Inject constructor(
      */
     suspend fun getRepositoriesFromDataSource(
         value: String
-    ): ServerResponse? {
+    ): Resource? {
         return withContext(Dispatchers.IO) {
             return@withContext getResponseFromRemoteService(value)
         }
@@ -27,14 +34,22 @@ class GitHubRepository @Inject constructor(
      */
     private suspend fun getResponseFromRemoteService(
         value: String
-    ): ServerResponse? {
+    ): Resource? {
         val response = gitHubRepoApiService.getRepositories(value)
         return if (response.isSuccessful) {
-            response.body()
-            //            response.body()?.let { responseListener.onSuccess(it) }
+            Success(data = response.body()!!)
         } else {
-            null
+            val gson = Gson()
+            //Deserialize error response.body
+            val type = object : TypeToken<Error>() {}.type
+            val errorObject: Error = gson.fromJson(response.errorBody()!!.charStream(), type)
+
+            Resource.Error(
+                ErrorResponse(
+                    errorObject.message,
+                    response.code()
+                )
+            )
         }
-//            responseListener.onError(response.errorBody().toString())
     }
 }

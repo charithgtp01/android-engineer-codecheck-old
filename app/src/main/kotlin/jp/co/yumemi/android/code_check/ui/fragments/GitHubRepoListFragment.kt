@@ -13,13 +13,16 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.constants.Constants
 import jp.co.yumemi.android.code_check.databinding.FragmentGitHubRepoListBinding
+import jp.co.yumemi.android.code_check.interfaces.ErrorDialogButtonClickListener
 import jp.co.yumemi.android.code_check.model.GitHubRepo
 import jp.co.yumemi.android.code_check.ui.adapters.GitRepoListAdapter
 import jp.co.yumemi.android.code_check.ui.views.GitHubRepoViewModel
 import jp.co.yumemi.android.code_check.utils.DialogUtils
+import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showErrorDialog
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressDialog
 import kotlinx.coroutines.delay
 
@@ -47,14 +50,22 @@ class GitHubRepoListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initiateAdapter()
         initiateProgressDialog()
+        viewModelObservers()
     }
 
     /**
-     * Progress Dialog Initiation
+     * Live Data Updates
      */
-    private fun initiateProgressDialog() {
-        dialog = showProgressDialog(context, context?.getString(R.string.wait))
+    private fun viewModelObservers() {
+        /* If server returns an error it will show in the custom error dialog */
+        viewModel.errorMessage.observe(requireActivity()) {
+            showErrorDialog(requireContext(), it?.error, object : ErrorDialogButtonClickListener {
+                override fun onButtonClick() {
 
+                }
+
+            })
+        }
 
         viewModel.isDialogVisible.observe(requireActivity()) {
             if (it) {
@@ -65,6 +76,20 @@ class GitHubRepoListFragment : Fragment() {
                 dialog?.dismiss()
             }
         }
+
+        /* Observer to catch list data
+        * Update Recycle View Items using Diff Utils
+        */
+        viewModel.gitHubRepoList.observe(requireActivity()) {
+            gitRepoListAdapter.submitList(it)
+        }
+    }
+
+    /**
+     * Progress Dialog Initiation
+     */
+    private fun initiateProgressDialog() {
+        dialog = showProgressDialog(context, context?.getString(R.string.wait))
     }
 
     /**
@@ -76,22 +101,11 @@ class GitHubRepoListFragment : Fragment() {
             override fun itemClick(item: GitHubRepo) {
                 gotoRepositoryFragment(item)
             }
-
-            override fun lastItemInitiated() {
-                Log.d(Constants.TAG, "Last Item Ini")
-            }
         })
 
         /* Set Adapter to Recycle View */
         binding.recyclerView.also { it2 ->
             it2.adapter = gitRepoListAdapter
-
-            /* Observer to catch list data
-            * Update Recycle View Items using Diff Utils
-            */
-            viewModel.gitHubRepoList.observe(requireActivity()) {
-                gitRepoListAdapter.submitList(it)
-            }
         }
     }
 
