@@ -9,8 +9,10 @@
     <dimen name="round_icon_stroke_width">0.5dp</dimen>
 
     /* Dialog View Dimensions */
+    <dimen name="dialog_horizontal_padding">16dp</dimen>
     <dimen name="dialog_top_padding">40dp</dimen>
     <dimen name="dialog_bottom_padding">40dp</dimen>
     <dimen name="shadowBorderRadius">5dp</dimen>
+    <dimen name="dialog_icon_size">100dp</dimen>
 
 </resources>

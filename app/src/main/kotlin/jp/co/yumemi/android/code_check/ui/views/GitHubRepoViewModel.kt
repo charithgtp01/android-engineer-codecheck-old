@@ -10,8 +10,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jp.co.yumemi.android.code_check.model.ErrorResponse
 import jp.co.yumemi.android.code_check.model.GitHubRepo
-import jp.co.yumemi.android.code_check.model.ServerResponse
 import jp.co.yumemi.android.code_check.repository.GitHubRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -29,10 +29,13 @@ class GitHubRepoViewModel @Inject constructor(
     private val _gitHubRepoList = MutableLiveData<List<GitHubRepo>>()
     val gitHubRepoList: LiveData<List<GitHubRepo>> get() = _gitHubRepoList
 
+    //Dialog Visibility Live Data
     private val _isDialogVisible = MutableLiveData<Boolean>()
-
-    val errorMessage = MutableLiveData<String>()
     val isDialogVisible: LiveData<Boolean> get() = _isDialogVisible
+
+    //Error Message Live Data
+    private val _errorMessage = MutableLiveData<ErrorResponse?>()
+    val errorMessage: LiveData<ErrorResponse?> get() = _errorMessage
 
     /**
      * Get Server Response and Set values to live data
@@ -41,9 +44,13 @@ class GitHubRepoViewModel @Inject constructor(
     private fun getGitHubRepoList(inputText: String) {
         /* View Model Scope - Coroutine */
         viewModelScope.launch {
-            val serverResponse: ServerResponse? =
-                gitHubRepository.getRepositoriesFromDataSource(inputText)
-            _gitHubRepoList.value = serverResponse?.items
+            val resource = gitHubRepository.getRepositoriesFromDataSource(inputText)
+
+            if (resource?.data != null) {
+                _gitHubRepoList.value = resource.data.items
+            }else
+                _errorMessage.value = resource?.error
+
 
             /* Hide Progress Dialog with 1 Second delay after fetching the data list from the server */
             delay(1000L)
