@@ -13,5 +13,5 @@ interface GitHubRepoApiService {
      * @see https://api.github.com/ to get Free APIs
      */
     @GET(REPOSITORIES_ENDPOINT)
-    suspend fun getRepositories(@Query("q") q: String): Response<ServerResponse>
+    suspend fun getRepositories(@Query("qr") q: String): Response<ServerResponse>
 }
