@@ -9,5 +9,6 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="list_separator_color">#80979494</color>
+    <color name="round_icon_stroke_color">#FF3700B3</color>
 
 </resources>

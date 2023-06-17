@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="vm"
             type="jp.co.yumemi.android.code_check.ui.views.GitHubRepoDetailsViewModel" />
@@ -12,18 +13,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ownerIconView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/avatar_margin"
             android:contentDescription="@null"
             android:src="@drawable/jetbrains"
+            app:layout_constraintBottom_toBottomOf="@id/imageSectionGuide"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_max="240dp" />
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+            app:strokeColor="@color/round_icon_stroke_color"
+            app:strokeWidth="@dimen/round_icon_stroke_width" />
 
         <TextView
             android:id="@+id/nameView"
@@ -34,7 +38,7 @@
             android:text='@{vm.gitRepoData.name}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ownerIconView" />
+            app:layout_constraintTop_toBottomOf="@id/imageSectionGuide" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/centerGuid"
@@ -106,6 +110,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/centerGuid"
             app:layout_constraintTop_toBottomOf="@id/forksView" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/imageSectionGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.40" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
