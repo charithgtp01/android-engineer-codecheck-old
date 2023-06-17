@@ -9,15 +9,22 @@ import javax.inject.Inject
 class GitHubRepository @Inject constructor(
     private val gitHubRepoApiService: GitHubRepoApiService
 ) {
+
+    /**
+     * Coroutines
+     */
     suspend fun getRepositoriesFromDataSource(
-        dealerCode: String
+        value: String
     ): ServerResponse? {
         return withContext(Dispatchers.IO) {
-            return@withContext getResponseFromRemoteService(dealerCode)
+            return@withContext getResponseFromRemoteService(value)
         }
     }
 
-    //From remote data source
+    /**
+     * @param  value: String search view text
+     * @return ServerResponse Object
+     */
     private suspend fun getResponseFromRemoteService(
         value: String
     ): ServerResponse? {

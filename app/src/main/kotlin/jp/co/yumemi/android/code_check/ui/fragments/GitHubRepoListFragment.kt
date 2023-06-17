@@ -11,18 +11,13 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentGitHubRepoListBinding
 import jp.co.yumemi.android.code_check.model.GitHubRepo
 import jp.co.yumemi.android.code_check.ui.adapters.GitRepoListAdapter
 import jp.co.yumemi.android.code_check.ui.views.GitHubRepoViewModel
 
 class GitHubRepoListFragment : Fragment() {
-
-    lateinit var binding: FragmentGitHubRepoListBinding
+    private lateinit var binding: FragmentGitHubRepoListBinding
     private lateinit var viewModel: GitHubRepoViewModel
     private lateinit var gitRepoListAdapter: GitRepoListAdapter
     override fun onCreateView(
@@ -30,6 +25,9 @@ class GitHubRepoListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        /*
+         * Initiate Data Binding and View Model
+        */
         binding = FragmentGitHubRepoListBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[GitHubRepoViewModel::class.java]
         binding.vm = viewModel
@@ -39,47 +37,44 @@ class GitHubRepoListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initiateAdapter()
+    }
 
+    /**
+     * Recycle View data configuration
+     */
+    private fun initiateAdapter() {
+        /* Initiate Adapter */
         gitRepoListAdapter = GitRepoListAdapter(object : GitRepoListAdapter.OnItemClickListener {
             override fun itemClick(item: GitHubRepo) {
                 gotoRepositoryFragment(item)
             }
         })
 
-        binding.searchInputText
-            .setOnEditorActionListener { editText, action, _ ->
-                if (action == EditorInfo.IME_ACTION_SEARCH) {
-                    editText.text.toString().let {
-                        viewModel.searchResults(it)
-                    }
-                    return@setOnEditorActionListener true
-                }
-                return@setOnEditorActionListener false
-            }
+        /* Set Adapter to Recycle View */
+        binding.recyclerView.also { it2 ->
+            it2.adapter = gitRepoListAdapter
 
-        binding.recyclerView.also {
-            it.adapter = gitRepoListAdapter
-            viewModel.gitHubRepoList.observe(requireActivity()) { it ->
+            /* Observer to catch list data
+            * Update Recycle View Items using Diff Utils
+            */
+            viewModel.gitHubRepoList.observe(requireActivity()) {
                 gitRepoListAdapter.submitList(it)
             }
 
         }
     }
 
-    fun gotoRepositoryFragment(item: GitHubRepo) {
-        val _action =
-            GitHubRepoListFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(item = item)
-        findNavController().navigate(_action)
-    }
-}
-
-val diff_util = object : DiffUtil.ItemCallback<GitHubRepo>() {
-    override fun areItemsTheSame(oldItem: GitHubRepo, newItem: GitHubRepo): Boolean {
-        return oldItem.name == newItem.name
-    }
-
-    override fun areContentsTheSame(oldItem: GitHubRepo, newItem: GitHubRepo): Boolean {
-        return oldItem == newItem
+    /**
+     * Navigate to Next Fragment Using Navigation Controller
+     * Pass selected Git Hub Repo Object using Safe Args
+     */
+    fun gotoRepositoryFragment(gitHubRepo: GitHubRepo) {
+        findNavController().navigate(
+            GitHubRepoListFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(
+                gitHubRepo
+            )
+        )
     }
 
 }
