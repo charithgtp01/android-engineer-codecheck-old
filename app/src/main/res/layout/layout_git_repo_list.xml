@@ -7,6 +7,19 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground">
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ownerIconView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+            app:strokeColor="@color/purple_700"
+            app:strokeWidth="0.5dp"
+            android:layout_margin="@dimen/recycle_view_margin"/>
+
         <TextView
             android:id="@+id/repositoryNameView"
             android:layout_width="0dp"
@@ -16,9 +29,36 @@
             android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/forwardArrowIcon"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.20" />
+
+        <ImageView
+            android:id="@+id/forwardArrowIcon"
+            android:layout_width="@dimen/forward_arrow_size"
+            android:layout_height="@dimen/forward_arrow_size"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="@dimen/content_horizontal_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/next"/>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/list_separator_color"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
