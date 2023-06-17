@@ -3,7 +3,9 @@
  */
 package jp.co.yumemi.android.code_check.ui.fragments
 
+import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +13,21 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.constants.Constants
 import jp.co.yumemi.android.code_check.databinding.FragmentGitHubRepoListBinding
 import jp.co.yumemi.android.code_check.model.GitHubRepo
 import jp.co.yumemi.android.code_check.ui.adapters.GitRepoListAdapter
 import jp.co.yumemi.android.code_check.ui.views.GitHubRepoViewModel
+import jp.co.yumemi.android.code_check.utils.DialogUtils
+import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressDialog
+import kotlinx.coroutines.delay
 
 class GitHubRepoListFragment : Fragment() {
     private lateinit var binding: FragmentGitHubRepoListBinding
     private lateinit var viewModel: GitHubRepoViewModel
     private lateinit var gitRepoListAdapter: GitRepoListAdapter
+    private var dialog: Dialog? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,6 +46,25 @@ class GitHubRepoListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initiateAdapter()
+        initiateProgressDialog()
+    }
+
+    /**
+     * Progress Dialog Initiation
+     */
+    private fun initiateProgressDialog() {
+        dialog = showProgressDialog(context, context?.getString(R.string.wait))
+
+
+        viewModel.isDialogVisible.observe(requireActivity()) {
+            if (it) {
+                /* Show dialog when calling the API */
+                dialog?.show()
+            } else {
+                /* Dismiss dialog after updating the data list to recycle view */
+                dialog?.dismiss()
+            }
+        }
     }
 
     /**
@@ -48,6 +75,10 @@ class GitHubRepoListFragment : Fragment() {
         gitRepoListAdapter = GitRepoListAdapter(object : GitRepoListAdapter.OnItemClickListener {
             override fun itemClick(item: GitHubRepo) {
                 gotoRepositoryFragment(item)
+            }
+
+            override fun lastItemInitiated() {
+                Log.d(Constants.TAG, "Last Item Ini")
             }
         })
 
@@ -61,7 +92,6 @@ class GitHubRepoListFragment : Fragment() {
             viewModel.gitHubRepoList.observe(requireActivity()) {
                 gitRepoListAdapter.submitList(it)
             }
-
         }
     }
 
