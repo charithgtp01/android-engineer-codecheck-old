@@ -4,6 +4,8 @@
 package jp.co.yumemi.android.code_check.ui.views
 
 import android.content.Context
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,13 +39,27 @@ class GitHubRepoViewModel @Inject constructor(
     private val _gitHubRepoList = MutableLiveData<List<GitHubRepo>>()
     val gitHubRepoList: LiveData<List<GitHubRepo>> get() = _gitHubRepoList
 
-    // 検索結果
-    fun searchResults(inputText: String) {
+    /**
+     * Get Server Response and Set values to live data
+     * @param inputText Pass entered value
+     */
+    private fun getGitHubRepoList(inputText: String) {
+        /* View Model Scope - Coroutine */
         viewModelScope.launch {
             val serverResponse: ServerResponse? =
                 gitHubRepository.getRepositoriesFromDataSource(inputText)
-
             _gitHubRepoList.value = serverResponse?.items
         }
+    }
+
+    /**
+     * Search View Submit Button Click Event
+     */
+    fun onEditorAction(editeText: TextView?, actionId: Int): Boolean {
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+            getGitHubRepoList(editeText?.text.toString())
+            return true
+        }
+        return false
     }
 }

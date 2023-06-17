@@ -1,10 +1,8 @@
 package jp.co.yumemi.android.code_check.di
 
-import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import jp.co.yumemi.android.code_check.apiservice.GitHubRepoApiService
 import jp.co.yumemi.android.code_check.constants.Constants.BASE_URL
@@ -18,26 +16,40 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
+    /**
+     * Get Base Url of the Rest API
+     */
     @Singleton
     @Provides
-    fun provideBaseUrl(@ApplicationContext context: Context): String {
+    fun provideBaseUrl(): String {
         return BASE_URL
     }
 
+    /**
+     * Create Gson Convertor Factory
+     */
     @Singleton
     @Provides
     fun provideConverterFactory(): Converter.Factory {
         return GsonConverterFactory.create();
     }
 
+    /**
+     * Create OkHttpClient
+     * Add Interceptor with Headers
+     */
     @Singleton
     @Provides
-    fun provideHttpClient(@ApplicationContext context: Context): OkHttpClient {
+    fun provideHttpClient(): OkHttpClient {
         val okHttpClient =
             OkHttpClient.Builder().addInterceptor(ServiceInterceptor())
         return okHttpClient.build()
     }
 
+    /**
+     * Create Retrofit Instance
+     */
     @Singleton
     @Provides
     fun provideRetrofit(
@@ -52,15 +64,23 @@ object NetworkModule {
             .build()
     }
 
+    /**
+     *  Abstract the communication with the remote API
+     *  Create Api Service Interface
+     */
     @Singleton
     @Provides
     fun provideGithubAccountApiService(retrofit: Retrofit): GitHubRepoApiService {
         return retrofit.create(GitHubRepoApiService::class.java)
     }
 
+    /**
+     * Create abstraction layer
+     * GitHubRepoApiService provide to access remote data
+     */
     @Singleton
     @Provides
-    fun provideDogRepository(gitHubRepoApiService:  GitHubRepoApiService): GitHubRepository {
+    fun provideGithubAccountRepository(gitHubRepoApiService:  GitHubRepoApiService): GitHubRepository {
         return GitHubRepository(gitHubRepoApiService)
     }
 }
