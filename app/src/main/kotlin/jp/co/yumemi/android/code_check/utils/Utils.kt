@@ -7,6 +7,10 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 
+
+/**
+ * Utils class for Common methods
+ */
 class Utils {
     companion object {
         /**

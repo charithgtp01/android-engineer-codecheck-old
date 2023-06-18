@@ -15,6 +15,9 @@ import jp.co.yumemi.android.code_check.databinding.FragmentGitHubDetailsBinding
 import jp.co.yumemi.android.code_check.model.GitHubRepo
 import jp.co.yumemi.android.code_check.ui.views.GitHubRepoDetailsViewModel
 
+/**
+ * Details Page Fragment
+ */
 class GitHubRepoDetailsFragment : Fragment() {
     private val args: GitHubRepoDetailsFragmentArgs by navArgs()
     private lateinit var binding: FragmentGitHubDetailsBinding

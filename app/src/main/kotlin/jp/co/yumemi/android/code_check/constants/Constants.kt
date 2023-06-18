@@ -1,5 +1,8 @@
 package jp.co.yumemi.android.code_check.constants
 
+/**
+ * Constants Variables
+ */
 object Constants {
 
     const val TAG = "Android Engineer Code Check"

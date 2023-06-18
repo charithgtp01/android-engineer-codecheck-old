@@ -1,7 +1,8 @@
 package jp.co.yumemi.android.code_check.interfaces
 
-import jp.co.yumemi.android.code_check.model.ServerResponse
-
+/**
+ * Error Dialog Button Click Listener
+ */
 interface ErrorDialogButtonClickListener {
     fun onButtonClick()
 

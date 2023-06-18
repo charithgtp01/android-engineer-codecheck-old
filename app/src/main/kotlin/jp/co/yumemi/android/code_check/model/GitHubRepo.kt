@@ -4,6 +4,9 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Data class for Git Hub Object
+ */
 @Parcelize
 data class GitHubRepo(
     val name: String?,

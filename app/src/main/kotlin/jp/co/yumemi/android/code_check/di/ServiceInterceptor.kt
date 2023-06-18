@@ -7,6 +7,9 @@ import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 
+/**
+ * Includes Network Request and Headers
+ */
 class ServiceInterceptor() : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
