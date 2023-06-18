@@ -1,5 +1,7 @@
 package jp.co.yumemi.android.code_check.di
 
+import android.app.Application
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,6 +18,14 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
+    /**
+     * Application context
+     */
+    @Singleton
+    @Provides
+    fun provideContext(application: Application): Context = application.applicationContext
+
 
     /**
      * Get Base Url of the Rest API
@@ -80,7 +90,7 @@ object NetworkModule {
      */
     @Singleton
     @Provides
-    fun provideGithubAccountRepository(gitHubRepoApiService:  GitHubRepoApiService): GitHubRepository {
-        return GitHubRepository(gitHubRepoApiService)
+    fun provideGithubAccountRepository(application: Application,gitHubRepoApiService:  GitHubRepoApiService): GitHubRepository {
+        return GitHubRepository(application,gitHubRepoApiService)
     }
 }

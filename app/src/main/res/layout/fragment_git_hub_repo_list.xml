@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="vm"
             type="jp.co.yumemi.android.code_check.ui.views.GitHubRepoViewModel" />
@@ -16,9 +17,9 @@
             android:id="@+id/searchBar"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
-            android:layout_margin="12dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="8dp"
+            android:layout_margin="@dimen/search_view_margin"
+            app:cardCornerRadius="@dimen/search_view_corner_radius"
+            app:cardElevation="@dimen/search_view_card_elevation"
             app:layout_constraintBottom_toTopOf="@id/recyclerView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +30,7 @@
                 style="@style/TextInputLayoutNoBorder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:importantForAutofill="no"
+                android:importantForAutofill="auto"
                 app:endIconMode="clear_text"
                 app:endIconTint="@android:color/darker_gray"
                 app:hintTextColor="@android:color/darker_gray"
@@ -49,8 +50,7 @@
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:onEditorAction="@{(view,actionId,event) -> vm.onEditorAction(view,actionId)}"
-
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/search_view_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

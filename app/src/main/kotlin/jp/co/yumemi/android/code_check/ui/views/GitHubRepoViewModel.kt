@@ -10,9 +10,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.yumemi.android.code_check.model.ErrorResponse
+import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.model.GitHubRepo
 import jp.co.yumemi.android.code_check.repository.GitHubRepository
+import jp.co.yumemi.android.code_check.utils.Utils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,8 +35,8 @@ class GitHubRepoViewModel @Inject constructor(
     val isDialogVisible: LiveData<Boolean> get() = _isDialogVisible
 
     //Error Message Live Data
-    private val _errorMessage = MutableLiveData<ErrorResponse?>()
-    val errorMessage: LiveData<ErrorResponse?> get() = _errorMessage
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?> get() = _errorMessage
 
     /**
      * Get Server Response and Set values to live data
@@ -48,9 +49,8 @@ class GitHubRepoViewModel @Inject constructor(
 
             if (resource?.data != null) {
                 _gitHubRepoList.value = resource.data.items
-            }else
-                _errorMessage.value = resource?.error
-
+            } else
+                _errorMessage.value = resource?.error?.error
 
             /* Hide Progress Dialog with 1 Second delay after fetching the data list from the server */
             delay(1000L)
@@ -63,9 +63,18 @@ class GitHubRepoViewModel @Inject constructor(
      */
     fun onEditorAction(editeText: TextView?, actionId: Int): Boolean {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            //Show Progress Dialog when click on the search view submit button
-            _isDialogVisible.value = true
-            getGitHubRepoList(editeText?.text.toString())
+
+            val isNetworkAvailable = Utils.isOnline(gitHubRepository.context.applicationContext)
+
+            //If Network available call to backend API
+            if (isNetworkAvailable) {
+                //Show Progress Dialog when click on the search view submit button
+                _isDialogVisible.value = true
+                getGitHubRepoList(editeText?.text.toString())
+            } else {
+                //Show Error Alert
+                _errorMessage.value = gitHubRepository.context.getString(R.string.no_internet)
+            }
             return true
         }
         return false

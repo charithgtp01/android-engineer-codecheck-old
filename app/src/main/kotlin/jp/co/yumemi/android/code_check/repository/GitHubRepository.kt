@@ -1,5 +1,6 @@
 package jp.co.yumemi.android.code_check.repository
 
+import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import jp.co.yumemi.android.code_check.apiservice.GitHubRepoApiService
@@ -14,8 +15,10 @@ import javax.inject.Inject
 
 
 class GitHubRepository @Inject constructor(
+    context: Context,
     private val gitHubRepoApiService: GitHubRepoApiService
 ) {
+    val context: Context = context
 
     /**
      * Coroutines
@@ -35,6 +38,8 @@ class GitHubRepository @Inject constructor(
     private suspend fun getResponseFromRemoteService(
         value: String
     ): Resource? {
+
+        /* Get Server Response */
         val response = gitHubRepoApiService.getRepositories(value)
         return if (response.isSuccessful) {
             Success(data = response.body()!!)
