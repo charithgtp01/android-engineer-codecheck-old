@@ -20,7 +20,6 @@
             android:layout_margin="@dimen/search_view_margin"
             app:cardCornerRadius="@dimen/search_view_corner_radius"
             app:cardElevation="@dimen/search_view_card_elevation"
-            app:layout_constraintBottom_toTopOf="@id/recyclerView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">

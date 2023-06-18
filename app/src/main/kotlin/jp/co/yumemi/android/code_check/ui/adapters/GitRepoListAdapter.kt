@@ -10,6 +10,9 @@ import jp.co.yumemi.android.code_check.databinding.LayoutGitRepoListBinding
 import jp.co.yumemi.android.code_check.model.GitHubRepo
 import javax.inject.Inject
 
+/**
+ * Main Activity List Adapter
+ */
 class GitRepoListAdapter @Inject constructor(
     private val itemClickListener: OnItemClickListener
 ) : ListAdapter<GitHubRepo, GitRepoListAdapter.GitRepoListViewHolder>(diffUtil) {

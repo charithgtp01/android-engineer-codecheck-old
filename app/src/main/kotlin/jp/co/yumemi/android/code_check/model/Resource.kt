@@ -1,5 +1,8 @@
 package jp.co.yumemi.android.code_check.model
 
+/**
+ * Sealed class to catch both Success and Error Response from Server
+ */
 sealed class Resource(
     val data: ServerResponse? = null,
     val error: ErrorResponse? = null

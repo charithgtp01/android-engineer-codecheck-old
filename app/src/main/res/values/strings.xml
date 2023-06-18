@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Android Engineer CodeCheck</string>
     <string name="searchInputText_hint">GitHub のリポジトリを検索できるよー</string>
-    <string name="wait">Please Wait....</string>
+    <string name="wait">お待ちください....</string>
     <string name="ok">OK</string>
-    <string name="no_internet">Please check you internet\n</string>\
+    <string name="no_internet">インターネットをチェックしてください\n</string>
+    <string name="no_value">値を入力してください\n</string>
 </resources>
