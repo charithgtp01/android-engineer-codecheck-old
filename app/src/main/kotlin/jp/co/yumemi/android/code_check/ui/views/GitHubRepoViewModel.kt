@@ -13,7 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.model.GitHubRepo
 import jp.co.yumemi.android.code_check.repository.GitHubRepository
-import jp.co.yumemi.android.code_check.utils.Utils
+import jp.co.yumemi.android.code_check.utils.Utils.Companion.isOnline
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -63,19 +63,28 @@ class GitHubRepoViewModel @Inject constructor(
     fun onEditorAction(editeText: TextView?, actionId: Int): Boolean {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
-            val isNetworkAvailable = Utils.isOnline(gitHubRepository.context.applicationContext)
+            val enteredValue = editeText?.text.toString()
 
-            //If Network available call to backend API
-            if (isNetworkAvailable) {
-                //Show Progress Dialog when click on the search view submit button
-                _isDialogVisible.value = true
-                getGitHubRepoList(editeText?.text.toString())
-            } else {
-                //Show Error Alert
+            if (enteredValue.isNullOrBlank()) {
+                //Empty value error Alert
                 _errorMessage.value = gitHubRepository.context.getString(R.string.no_internet)
+            } else{
+                val isNetworkAvailable = isOnline(gitHubRepository.context.applicationContext)
+
+                //If Network available call to backend API
+                if (isNetworkAvailable) {
+                    //Show Progress Dialog when click on the search view submit button
+                    _isDialogVisible.value = true
+                    getGitHubRepoList(editeText?.text.toString())
+                } else {
+                    //Show Error Alert
+                    _errorMessage.value = gitHubRepository.context.getString(R.string.no_internet)
+                }
             }
-            return true
-        }
-        return false
+
+
+        return true
     }
+    return false
+}
 }

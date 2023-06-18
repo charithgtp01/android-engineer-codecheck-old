@@ -4,4 +4,5 @@
     <string name="wait">お待ちください....</string>
     <string name="ok">OK</string>
     <string name="no_internet">インターネットをチェックしてください\n</string>
+    <string name="no_value">値を入力してください\n</string>
 </resources>
