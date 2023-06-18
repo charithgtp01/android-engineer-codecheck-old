@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -32,84 +33,81 @@
         <TextView
             android:id="@+id/nameView"
             style="@style/nameTextViewStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/vertical_margin"
+            android:gravity="center"
             android:text='@{vm.gitRepoData.name}'
+            app:layout_constraintBottom_toTopOf="@+id/centerHorizontalGuid"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageSectionGuide" />
+            app:layout_constraintTop_toBottomOf="@+id/ownerIconView" />
+
+        <TextView
+            android:id="@+id/languageView"
+            style="@style/languageTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/content_horizontal_margin"
+            android:text='@{"Language : "+vm.gitRepoData.language}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameView" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/centerGuid"
+            android:id="@+id/centerVerticalGuid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
-        <TextView
-            android:id="@+id/languageView"
-            style="@style/languageTextViewStyle"
+
+        <include
+            android:id="@+id/include2"
+            layout="@layout/context_vew_layout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/content_horizontal_margin"
-            android:layout_marginTop="@dimen/content_margin_top"
-            android:text="@{vm.gitRepoData.language}"
-            app:layout_constraintEnd_toStartOf="@+id/centerGuid"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/centerHorizontalCenterGuid"
+            app:layout_constraintEnd_toStartOf="@+id/centerVerticalGuid"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/nameView" />
+            app:layout_constraintTop_toTopOf="@+id/centerHorizontalGuid"
+            bind:label='@{"Starts"}'
+            bind:value="@{vm.gitRepoData.stargazersCount.toString()}" />
 
-        <TextView
-            android:id="@+id/starsView"
-            style="@style/contentStyle"
+        <include
+            layout="@layout/context_vew_layout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/content_horizontal_margin"
-            android:layout_marginTop="@dimen/content_margin_top"
-            android:text='@{vm.gitRepoData.stargazersCount +" stars"}'
-            android:textAlignment="textEnd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/centerGuid"
-            app:layout_constraintTop_toBottomOf="@id/nameView" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/centerVerticalGuid"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include2"
+            bind:label='@{"Forks"}'
+            bind:value="@{vm.gitRepoData.forksCount.toString()}" />
 
-        <TextView
-            android:id="@+id/watchersView"
-            style="@style/contentStyle"
+        <include
+            android:id="@+id/include"
+            layout="@layout/context_vew_layout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/content_horizontal_margin"
-            android:layout_marginTop="@dimen/content_margin_top"
-            android:text='@{vm.gitRepoData.watchersCount +" watchers"}'
-            android:textAlignment="textEnd"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/include2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/centerGuid"
-            app:layout_constraintTop_toBottomOf="@id/starsView" />
+            app:layout_constraintStart_toStartOf="@+id/centerVerticalGuid"
+            app:layout_constraintTop_toBottomOf="@+id/include2"
+            app:layout_constraintTop_toTopOf="@+id/include2"
+            bind:label='@{"Watchers"}'
+            bind:value="@{vm.gitRepoData.watchersCount.toString()}" />
 
-        <TextView
-            android:id="@+id/forksView"
-            style="@style/contentStyle"
+        <include
+            layout="@layout/context_vew_layout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/content_horizontal_margin"
-            android:layout_marginTop="@dimen/content_margin_top"
-            android:text='@{vm.gitRepoData.forksCount +" forks"}'
-            android:textAlignment="textEnd"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/centerGuid"
-            app:layout_constraintTop_toBottomOf="@id/watchersView" />
+            app:layout_constraintStart_toStartOf="@+id/centerVerticalGuid"
+            app:layout_constraintTop_toBottomOf="@+id/include"
+            bind:label='@{"Open Issues"}'
+            bind:value="@{vm.gitRepoData.openIssuesCount.toString()}" />
 
-        <TextView
-            android:id="@+id/openIssuesView"
-            style="@style/contentStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/content_horizontal_margin"
-            android:layout_marginTop="@dimen/content_margin_top"
-            android:text='@{vm.gitRepoData.openIssuesCount +"  open issues"}'
-            android:textAlignment="textEnd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/centerGuid"
-            app:layout_constraintTop_toBottomOf="@id/forksView" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/imageSectionGuide"
@@ -118,5 +116,18 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.40" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/centerHorizontalGuid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.50" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/centerHorizontalCenterGuid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.75" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
