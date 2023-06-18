@@ -19,9 +19,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * TwoFragment で使う
+ * Home Fragment View Model
  */
-
 @HiltViewModel
 class GitHubRepoViewModel @Inject constructor(
     private val gitHubRepository: GitHubRepository

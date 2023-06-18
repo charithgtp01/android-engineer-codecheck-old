@@ -6,6 +6,9 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+/**
+ * Api Service for fetch Git Hub Repos from Server
+ */
 interface GitHubRepoApiService {
 
     /**
@@ -13,5 +16,5 @@ interface GitHubRepoApiService {
      * @see https://api.github.com/ to get Free APIs
      */
     @GET(REPOSITORIES_ENDPOINT)
-    suspend fun getRepositories(@Query("q") q: String): Response<ServerResponse>
+    suspend fun getRepositories(@Query("q") query: String): Response<ServerResponse>
 }

@@ -20,6 +20,9 @@ import jp.co.yumemi.android.code_check.ui.views.GitHubRepoViewModel
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showErrorDialog
 import jp.co.yumemi.android.code_check.utils.DialogUtils.Companion.showProgressDialog
 
+/**
+ * Home Fragment of the Application
+ */
 class GitHubRepoListFragment : Fragment() {
     private lateinit var binding: FragmentGitHubRepoListBinding
     private lateinit var viewModel: GitHubRepoViewModel

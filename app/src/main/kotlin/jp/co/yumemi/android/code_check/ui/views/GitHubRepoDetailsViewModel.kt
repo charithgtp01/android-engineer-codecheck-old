@@ -1,6 +1,5 @@
 package jp.co.yumemi.android.code_check.ui.views
 
-import androidx.databinding.Bindable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +8,9 @@ import jp.co.yumemi.android.code_check.model.GitHubRepo
 import javax.inject.Inject
 
 
+/**
+ * Details page View Model
+ */
 @HiltViewModel
 class GitHubRepoDetailsViewModel @Inject constructor() : ViewModel() {
 

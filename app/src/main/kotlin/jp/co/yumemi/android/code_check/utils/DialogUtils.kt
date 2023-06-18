@@ -15,6 +15,9 @@ import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.interfaces.ErrorDialogButtonClickListener
 import jp.co.yumemi.android.code_check.utils.Utils.Companion.changeUiSize
 
+/**
+ * Utils class for Dialogs and Alerts
+ */
 class DialogUtils {
     companion object {
 
